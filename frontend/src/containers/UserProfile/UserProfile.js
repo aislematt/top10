@@ -7,10 +7,10 @@ class MyList extends Component {
 
     state = {
         lists: null
-    }
+    };
 
     componentDidMount = () => {
-        axios.get('/lists/1').then(response => {
+        axios.get('/lists/' + this.props.match.params.id).then(response => {
             console.log(response);
             this.setState({lists: response.data.lists})
         }).catch(error => {
@@ -19,10 +19,10 @@ class MyList extends Component {
     };
 
     render() {
-        let displayLists = <Spinner></Spinner>
+        let displayLists = <Spinner/>;
         if (this.state.lists !== null) {
             displayLists = this.state.lists.map(aList => {
-                return <ListCard key={aList.id} list={aList}></ListCard>
+                return <ListCard key={aList.id} list={aList}/>
             });
         }
         return displayLists;

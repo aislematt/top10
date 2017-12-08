@@ -26,6 +26,10 @@ class User(Base):
         self.last_name = last_name
         self.email = email
 
+    @property
+    def name(self):
+        return self.first_name + " " + self.last_name
+
     def set_password(self, password):
         self.password = bcrypt_sha256.encrypt(password)
 

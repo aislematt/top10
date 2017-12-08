@@ -28,7 +28,9 @@ class List (Base):
 
     @hybrid_property
     def list_items(self):
-        return [i.json for i in self.listItems]
+        sorted_list_items = sorted(self.listItems, key=lambda x: x.rank, reverse=False)
+
+        return [i.json for i in sorted_list_items]
 
 class ListItem(Base):
     __tablename__ = 'listitem'

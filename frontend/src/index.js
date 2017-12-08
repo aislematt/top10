@@ -8,6 +8,8 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import axios from 'axios'
 import authReducer from "./store/reducers/auth";
+import listReducer from "./store/reducers/lists";
+
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk'
 
@@ -16,7 +18,9 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 axios.defaults.baseURL = "http://localhost:5000";
 
 const rootReducer = combineReducers({
-    auth: authReducer
+    auth: authReducer,
+    lists: listReducer
+
 });
 
 const store = createStore(rootReducer, composeEnhancers(

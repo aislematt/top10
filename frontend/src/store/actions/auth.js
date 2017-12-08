@@ -73,7 +73,6 @@ export const setAuthRedirectPath = (path) => {
 export const authCheckState = () => {
     return dispatch => {
         const token = localStorage.getItem('token');
-        console.log(token)
         if (!token) {
             dispatch(logout());
         } else {
@@ -82,7 +81,6 @@ export const authCheckState = () => {
             //     dispatch(logout());
             // } else {
                 const userId = localStorage.getItem('userId');
-                console.log("SUCCESS")
                 axios.defaults.headers.common["Authorization"] = "TOKEN " + token;
                 dispatch(authSuccess(token, userId));
                 // dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000 ));

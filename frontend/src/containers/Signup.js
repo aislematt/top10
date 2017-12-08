@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import axios from 'axios'
 import Spinner from "../components/UI/Spinner/Spinner";
 import {connect} from 'react-redux';
@@ -6,10 +6,11 @@ import withErrorHandler from '../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../store/actions/index';
 import Input from "../UI/Input/Input";
 import Button from "../UI/Button/Button";
+import FormComponent from "../hoc/Form/Form";
 
-class Signup extends Component {
+class Signup extends FormComponent {
     state = {
-        signupForm: {
+        form: {
             first_name: {
                 elementType: 'input',
                 elementConfig: {
@@ -73,68 +74,18 @@ class Signup extends Component {
         event.preventDefault();
         this.setState({loading: true});
         const formData = {};
-        for (let formElementIdentifier in this.state.signupForm) {
-            formData[formElementIdentifier] = this.state.signupForm[formElementIdentifier].value;
+        for (let formElementIdentifier in this.state.form) {
+            formData[formElementIdentifier] = this.state.form[formElementIdentifier].value;
         }
         this.props.onAuth(formData, true);
     };
 
-    checkValidity(value, rules) {
-        let isValid = true;
-        if (!rules) {
-            return true;
-        }
-
-        if (rules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
-
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid
-        }
-
-        if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid
-        }
-
-        if (rules.isEmail) {
-            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-            isValid = pattern.test(value) && isValid
-        }
-
-        if (rules.isNumeric) {
-            const pattern = /^\d+$/;
-            isValid = pattern.test(value) && isValid
-        }
-
-        return isValid;
-    }
-
-    inputChangedHandler = (event, inputIdentifier) => {
-        const updatedSignupForm = {
-            ...this.state.signupForm
-        };
-        const updatedFormElement = {
-            ...updatedSignupForm[inputIdentifier]
-        };
-        updatedFormElement.value = event.target.value;
-        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
-        updatedFormElement.touched = true;
-        updatedSignupForm[inputIdentifier] = updatedFormElement;
-
-        let formIsValid = true;
-        for (let inputIdentifier in updatedSignupForm) {
-            formIsValid = updatedSignupForm[inputIdentifier].valid && formIsValid;
-        }
-        this.setState({signupForm: updatedSignupForm, formIsValid: formIsValid});
-    };
-
     render() {
         const formElementsArray = [];
-        for (let key in this.state.signupForm) {
+        for (let key in this.state.form) {
             formElementsArray.push({
                 id: key,
-                config: this.state.signupForm[key]
+                config: this.state.form[key]
             });
         }
         let form = (
@@ -167,13 +118,13 @@ class Signup extends Component {
 
 const mapStateToProps = state => {
     return {};
-}
+};
 
 const mapDispatchToProps = dispatch => {
     return {
         onAuth: (authData, isSignup) => dispatch(actions.auth(authData, isSignup)),
     }
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Signup, axios));
 

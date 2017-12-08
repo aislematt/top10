@@ -1,18 +1,27 @@
-import React from 'react';
+import  React from 'react';
 import ListItem from '../ListItem/ListItem'
+import moment from "moment";
+import classes from './List.css'
+import {Link} from "react-router-dom";
 
 
 const list = (props) => {
-    const listItems = props.list.list_items.map(listItem => {
-        return (
-            <ListItem key={listItem.id} item={listItem}></ListItem>
-        )
-    });
+    let listItems = null;
+    if (!props.hideListItems) {
+            listItems = props.list.list_items.map(listItem => {
+            return (
+                <ListItem key={listItem.id} item={listItem}/>
+            )
+        });
+    }
+    let createdAt = moment(props.list.created_at).format("MMMM D, Y");
+
+
     return (
         <div>
 
             <h1>{props.list.name}</h1>
-            <p>{props.list.author} | {props.list.date}</p>
+            <p>By <Link to={"/lists/" + props.list.user_id}>{props.list.user_name}</Link> | <span className={classes.CreatedAt}>{createdAt}</span></p>
             <p>{props.list.description}</p>
             <div>
                 {listItems}

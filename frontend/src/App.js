@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import './App.css';
 import Layout from './hoc/Layout/Layout'
-import ListBuilder from './containers/ListBuilder/ListBuilder'
-import {Redirect, Route, Switch} from 'react-router-dom';
+import ListBuilder from './containers/UserProfile/UserProfile'
+import {Redirect, Route} from 'react-router-dom';
 import SingleList from "./containers/SingleList";
 import Signup from "./containers/Signup";
 import withRouter from "react-router-dom/es/withRouter";
@@ -10,6 +10,8 @@ import * as actions from "./store/actions";
 import {connect} from "react-redux";
 import Login from "./containers/Login";
 import MyLists from "./containers/MyLists";
+import CreateList from "./containers/CreateList/CreateList";
+import EditList from "./containers/EditList/EditList";
 
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
@@ -27,7 +29,7 @@ class App extends Component {
 
     state = {
         authenticationChecked : false
-    }
+    };
 
     componentDidMount () {
         this.props.onTryAutoSignup();
@@ -35,17 +37,19 @@ class App extends Component {
 
     }
     render() {
-        console.log("ISAUTHENTICATED", this.props.isAuthenticated)
         if (this.state.authenticationChecked) {
 
             return (
                 <div className="App">
                     <Layout>
-                        <Route path="/" exact component={ListBuilder}/>
                         <Route path="/list/:id" exact component={SingleList}/>
                         <Route path="/signup" exact component={Signup}/>
                         <Route path="/login" exact component={Login}/>
+                        <Route path="/user/:id" exact component={ListBuilder}/>
                         <PrivateRoute path="/myLists" authed={this.props.isAuthenticated} exact component={MyLists}/>
+                        <PrivateRoute path="/createList" authed={this.props.isAuthenticated} exact component={CreateList}/>
+                        <PrivateRoute path="/editList/:listId?" authed={this.props.isAuthenticated} component={EditList}/>
+
                     </Layout>
                 </div>
             );
