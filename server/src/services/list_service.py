@@ -2,6 +2,10 @@ from db import db
 from models.list import List, ListItem
 
 
+def check_list_ownership(list, user_id):
+    return list.user_id == user_id
+
+
 def get_lists(user_id):
     lists = db.get_session().query(List).filter(List.user_id == user_id).all()
     return lists
@@ -14,8 +18,15 @@ def add_new_list(client_list, user):
     return list
 
 
-def check_list_ownership(list, user_id):
-    return list.user_id == user_id
+def edit_existing_list(client_list, user):
+    list = get_list_by_id(client_list["list_id"])
+    if not check_list_ownership(list, user.id):
+        return False, 401
+    list.name = client_list["name"]
+    list.image = client_list["image"]
+
+    db.get_session().commit()
+    return list, 200
 
 
 def add_new_list_item(list_item, user):

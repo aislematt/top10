@@ -9,6 +9,7 @@ import ListItem from "../../components/ListItem/ListItem";
 import List from "../../components/List/List";
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import classes from './EditList.css'
+import Input from "../../components/UI/Input/Input";
 
 const grid = 8;
 const getItemStyle = (draggableStyle, isDragging) => ({
@@ -63,6 +64,35 @@ class EditList extends FormComponent {
                 elementConfig: {
                     type: 'text',
                     placeholder: 'video url'
+                },
+                value: '',
+                validation: {
+                    required: false
+                },
+                valid: false,
+                touched: false
+            }
+        },
+        listForm: {
+            name: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'name'
+                },
+                label: 'List Name',
+                value: '',
+                validation: {
+                    required: true
+                },
+                valid: false,
+                touched: false
+            },
+            image: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'image url'
                 },
                 value: '',
                 validation: {
@@ -134,6 +164,32 @@ class EditList extends FormComponent {
         }
     };
 
+    listFormSubmitHandler = (event) => {
+        event.preventDefault();
+        this.setState({loading: true});
+        const formData = {};
+        for (let formElementIdentifier in this.state.listForm) {
+            formData[formElementIdentifier] = this.state.listForm[formElementIdentifier].value;
+        }
+        formData["list_id"] = this.state.list.id;
+
+
+        axios.patch('/list', formData)
+            .then(response => {
+                this.setState({
+                    list: response.data.list,
+                    loading: false,
+                    addingItem: false,
+                    editingItem: false,
+                    currentItem: null
+                })
+
+            })
+            .catch(err => {
+                this.setState({loading: false})
+            });
+    };
+
     formSubmitHandler = (event) => {
         event.preventDefault();
         this.setState({loading: true});
@@ -167,18 +223,44 @@ class EditList extends FormComponent {
 
     componentDidMount() {
         if (this.props.list) {
-            this.setState({list: this.props.list})
+            this.setState({list: this.props.list});
+            for (let formElementIdentifier in this.state.listForm) {
+                this.state.listForm[formElementIdentifier].value = this.props.list[formElementIdentifier];
+            }
         }
         if (!this.props.list && this.props.match.params.listId) {
             this.state.loading = true;
             axios.get("/list/" + this.props.match.params.listId)
                 .then(response => {
+                        for (let formElementIdentifier in this.state.listForm) {
+                            this.state.listForm[formElementIdentifier].value = response.data.list[formElementIdentifier];
+                        }
                         this.setState({list: response.data.list, loading: false});
+
                     }
                 )
         }
 
     }
+
+    listInputChangedHandler = (event, inputIdentifier) => {
+        const updatedForm = {
+            ...this.state.listForm
+        };
+        const updatedFormElement = {
+            ...updatedForm[inputIdentifier]
+        };
+        updatedFormElement.value = event.target.value;
+        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+        updatedFormElement.touched = true;
+        updatedForm[inputIdentifier] = updatedFormElement;
+
+        let formIsValid = true;
+        for (let inputIdentifier in updatedForm) {
+            formIsValid = updatedForm[inputIdentifier].valid && formIsValid;
+        }
+        this.setState({listForm: updatedForm, formIsValid: formIsValid});
+    };
 
     render() {
         let display = null;
@@ -222,9 +304,37 @@ class EditList extends FormComponent {
                         </Droppable>
                     </DragDropContext>);
                 }
+
+                const formElementsArray = [];
+                for (let key in this.state.listForm) {
+                    formElementsArray.push({
+                        id: key,
+                        config: this.state.listForm[key]
+                    });
+                }
+
+                let form = (
+                    <form onSubmit={this.listFormSubmitHandler}>
+                        {formElementsArray.map(formElement => (
+                            <Input
+                                key={formElement.id}
+                                label={formElement.config.label}
+                                elementType={formElement.config.elementType}
+                                elementConfig={formElement.config.elementConfig}
+                                value={formElement.config.value}
+                                invalid={!formElement.config.valid}
+                                shouldValidate={formElement.config.validation}
+                                touched={formElement.config.touched}
+                                changed={(event) => this.listInputChangedHandler(event, formElement.id)}/>
+                        ))}
+                        <Button btnType="Success" disabled={!this.state.formIsValid}>SAVE</Button>
+                    </form>
+                );
+
+
                 display = (
                     <div className={classes.EditList}>
-                        <List key="list" list={this.state.list} hideListItems={true}/>
+                        {form}
                         {listItems}
                         <Button key="add" btnType="Success" clicked={this.addItemHandler}>ADD ITEM</Button>
                     </div>

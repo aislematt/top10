@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios'
 import Spinner from "../components/UI/Spinner/Spinner";
 import ListCard from "../components/ListCard/ListCard";
+import ListCards from "../components/ListCards/ListCards";
 
 class MyLists extends Component {
     state = {
@@ -20,9 +21,7 @@ class MyLists extends Component {
     render() {
         let displayLists = <Spinner/>;
         if (this.state.lists !== null) {
-            displayLists = this.state.lists.map(aList => {
-                return <ListCard key={aList.id} list={aList}/>
-            });
+            displayLists = <ListCards lists={this.state.lists}/>
         }
         return displayLists;
     }
