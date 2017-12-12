@@ -3,7 +3,7 @@ import './App.css';
 import Layout from './hoc/Layout/Layout'
 import UserProfile from './containers/UserProfile/UserProfile'
 import {Redirect, Route} from 'react-router-dom';
-import SingleList from "./containers/SingleList";
+import SingleList from "./containers/SingleList/SingleList";
 import Signup from "./containers/Signup";
 import withRouter from "react-router-dom/es/withRouter";
 import * as actions from "./store/actions";

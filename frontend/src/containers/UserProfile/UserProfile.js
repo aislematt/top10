@@ -10,7 +10,6 @@ class UserProfile extends Component {
     };
 
     componentDidMount = () => {
-        console.log("YO")
         axios.get('/lists/' + this.props.match.params.id).then(response => {
             console.log(response);
             this.setState({lists: response.data.lists})

@@ -3,12 +3,12 @@ import axios from 'axios'
 import Spinner from "../../components/UI/Spinner/Spinner";
 import {connect} from 'react-redux';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
-import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import FormComponent from "../../hoc/Form/Form";
 import ListItem from "../../components/ListItem/ListItem";
 import List from "../../components/List/List";
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
+import classes from './EditList.css'
 
 const grid = 8;
 const getItemStyle = (draggableStyle, isDragging) => ({
@@ -18,15 +18,14 @@ const getItemStyle = (draggableStyle, isDragging) => ({
     margin: `0 0 ${grid}px 0`,
 
     // change background colour if dragging
-    background: isDragging ? 'lightgreen' : 'grey',
+    background: isDragging ? 'lightgreen' : 'lightgrey',
 
     // styles we need to apply on draggables
     ...draggableStyle,
 });
 const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightblue' : 'lightgrey',
-    padding: grid,
-    width: 500,
+    background: isDraggingOver ? 'lightblue' : 'white',
+    padding: grid
 });
 
 class EditList extends FormComponent {
@@ -55,6 +54,19 @@ class EditList extends FormComponent {
                 value: '',
                 validation: {
                     required: true
+                },
+                valid: false,
+                touched: false
+            },
+            yt_video: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'video url'
+                },
+                value: '',
+                validation: {
+                    required: false
                 },
                 valid: false,
                 touched: false
@@ -112,11 +124,11 @@ class EditList extends FormComponent {
     };
 
     addItemHandler = (event) => {
-        this.setState({addingItem: true, formButtonText:'ADD ITEM'})
+        this.setState({addingItem: true, formButtonText: 'ADD ITEM'})
     };
 
     editItemHandler = (currentItem, event) => {
-        this.setState({editingItem: true, currentItem: currentItem,formButtonText:'EDIT ITEM'});
+        this.setState({editingItem: true, currentItem: currentItem, formButtonText: 'EDIT ITEM'});
         for (let formElementIdentifier in this.state.form) {
             this.state.form[formElementIdentifier].value = currentItem[formElementIdentifier];
         }
@@ -169,13 +181,12 @@ class EditList extends FormComponent {
     }
 
     render() {
-        let display = [];
+        let display = null;
         if (!this.state.addingItem && !this.state.editingItem) {
             if (this.state.list) {
-                display.push(<List key="list" list={this.state.list} hideListItems={true}/>);
-
+                let listItems = null;
                 if (this.state.list.list_items) {
-                    display.push(<DragDropContext key="items" onDragEnd={this.onDragEnd}>
+                    listItems = (<DragDropContext key="items" onDragEnd={this.onDragEnd}>
                         <Droppable droppableId="droppable">
                             {(provided, snapshot) => (
                                 <div
@@ -194,9 +205,11 @@ class EditList extends FormComponent {
                                                         )}
                                                         {...provided.dragHandleProps}
                                                     >
-                                                        <Button btnType="Success" clicked={() => this.editItemHandler(item)}>Edit Item</Button>
+                                                        <Button btnType="Success"
+                                                                clicked={() => this.editItemHandler(item)}>Edit
+                                                            Item</Button>
 
-                                                        <ListItem item={item}/>
+                                                        <ListItem item={item} hideVideo='true'/>
                                                     </div>
                                                     {provided.placeholder}
                                                 </div>
@@ -209,27 +222,24 @@ class EditList extends FormComponent {
                         </Droppable>
                     </DragDropContext>);
                 }
-                display.push(<Button key="add" btnType="Success" clicked={this.addItemHandler}>ADD ITEM</Button>)
+                display = (
+                    <div className={classes.EditList}>
+                        <List key="list" list={this.state.list} hideListItems={true}/>
+                        {listItems}
+                        <Button key="add" btnType="Success" clicked={this.addItemHandler}>ADD ITEM</Button>
+                    </div>
+                );
             }
             else {
                 display = <Spinner/>
             }
         } else {
-
-
-            const formElementsArray = [];
-            for (let key in this.state.form) {
-                formElementsArray.push({
-                    id: key,
-                    config: this.state.form[key]
-                });
-            }
             let form = this.defaultForm();
             if (this.state.loading) {
                 form = <Spinner/>;
             }
             display = (
-                <div>
+                <div className={classes.EditList}>
                     <h4>Add Item</h4>
                     {form}
                 </div>

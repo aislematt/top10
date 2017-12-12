@@ -14,8 +14,15 @@ def add_new_list(client_list, user):
     return list
 
 
-def add_new_list_item(list_item):
+def check_list_ownership(list, user_id):
+    return list.user_id == user_id
+
+
+def add_new_list_item(list_item, user):
     list = get_list_by_id(list_item["list_id"])
+    if not check_list_ownership(list, user.id):
+        return False, 401
+
     rank = list_item.get("rank")
     if not rank:
         rank = 1
@@ -26,23 +33,33 @@ def add_new_list_item(list_item):
     db.get_session().add(item)
     db.get_session().commit()
     list = get_list_by_id(list_item["list_id"])
-    return list
+    return list, 200
 
 
-def edit_existing_list_item(list_item):
+def edit_existing_list_item(list_item, user):
     existing_item = get_list_item_by_id(list_item["list_item_id"])
+    list = get_list_by_id(list_item["list_id"])
+    if not check_list_ownership(list, user.id):
+        return False, 401
+
     existing_item.name = list_item["name"]
     existing_item.body = list_item["body"]
+    existing_item.yt_video = list_item["yt_video"]
+
     db.get_session().commit()
     list = get_list_by_id(list_item["list_id"])
-    return list
+    return list, 200
 
-def reorderList(list_id, list_item_ids):
+
+def reorder_list_items(list_id, list_item_ids, user):
     list = get_list_by_id(list_id)
+    if not check_list_ownership(list, user.id):
+        return False, 401
+
     for item in list.listItems:
-        item.rank = list_item_ids.index(item.id) + 1
+        item.rank = len(list_item_ids) - list_item_ids.index(item.id)
     db.get_session().commit()
-    return list
+    return list, 200
 
 
 def get_list_item_by_id(list_item_id):

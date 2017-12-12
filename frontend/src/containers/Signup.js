@@ -4,8 +4,6 @@ import Spinner from "../components/UI/Spinner/Spinner";
 import {connect} from 'react-redux';
 import withErrorHandler from '../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../store/actions/index';
-import Input from "../components/UI/Input/Input";
-import Button from "../components/UI/Button/Button";
 import FormComponent from "../hoc/Form/Form";
 
 class Signup extends FormComponent {
@@ -81,29 +79,7 @@ class Signup extends FormComponent {
     };
 
     render() {
-        const formElementsArray = [];
-        for (let key in this.state.form) {
-            formElementsArray.push({
-                id: key,
-                config: this.state.form[key]
-            });
-        }
-        let form = (
-            <form onSubmit={this.signupHandler}>
-                {formElementsArray.map(formElement => (
-                    <Input
-                        key={formElement.id}
-                        elementType={formElement.config.elementType}
-                        elementConfig={formElement.config.elementConfig}
-                        value={formElement.config.value}
-                        invalid={!formElement.config.valid}
-                        shouldValidate={formElement.config.validation}
-                        touched={formElement.config.touched}
-                        changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
-                ))}
-                <Button btnType="Success" disabled={!this.state.formIsValid}>SIGNUP</Button>
-            </form>
-        );
+        let form = this.defaultForm();
         if (this.state.loading) {
             form = <Spinner/>;
         }

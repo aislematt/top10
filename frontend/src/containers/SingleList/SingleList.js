@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import axios from 'axios'
-import Spinner from "../components/UI/Spinner/Spinner";
-import List from "../components/List/List";
+import Spinner from "../../components/UI/Spinner/Spinner";
+import List from "../../components/List/List";
 import {connect} from "react-redux";
-import Button from "../components/UI/Button/Button";
+import Button from "../../components/UI/Button/Button";
+import classes from './SingleList.css'
 
 class SingleList extends Component {
     state = {
@@ -31,7 +32,8 @@ class SingleList extends Component {
                 editButton = <Button btnType="Success" clicked={this.editButtonHandler}>EDIT</Button>
             }
             displayLists = (
-                <div>
+                <div className={classes.SingleList}>
+                    {editButton}
                     {list}
                     {editButton}
                 </div>

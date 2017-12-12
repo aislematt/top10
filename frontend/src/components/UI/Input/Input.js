@@ -1,6 +1,7 @@
 import React from 'react';
 
 import classes from './Input.css';
+import TextareaAutosize from 'react-autosize-textarea';
 
 const input = ( props ) => {
     let inputElement = null;
@@ -19,7 +20,7 @@ const input = ( props ) => {
                 onChange={props.changed} />;
             break;
         case ( 'textarea' ):
-            inputElement = <textarea
+            inputElement = <TextareaAutosize
                 className={inputClasses.join(' ')}
                 {...props.elementConfig}
                 value={props.value}
