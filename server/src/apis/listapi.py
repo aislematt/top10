@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request, g
 
 from .baseapi import auth
-from services.list_service import add_new_list_item, get_lists, add_new_list, get_list_by_id, edit_existing_list_item
+from services.list_service import add_new_list_item, get_lists, add_new_list, get_list_by_id, edit_existing_list_item, \
+    reorderList
 from utilities.utilities import get_json
 
 list_api = Blueprint('list_api', __name__)
@@ -44,4 +45,12 @@ def edit_list_item():
 def my_lists():
     lists = get_lists(g.current_user.id)
     return jsonify({"lists" : get_json(lists)})
+
+
+@list_api.route('/reorderList', methods=["POST"])
+@auth.login_required
+def reorder_list():
+    data = request.json
+    list = reorderList(data["list_id"], data["itemIdsRanked"])
+    return jsonify({"list" : list.json})
 

@@ -1,9 +1,12 @@
-import {Component} from 'react'
+import React, {Component} from 'react'
+import Button from "../../components/UI/Button/Button";
+import Input from "../../components/UI/Input/Input";
 
 class FormComponent extends Component {
 
     state = {
-        form : null
+        form : null,
+        formButtonText:"SUBMIT"
     };
 
     checkValidity(value, rules) {
@@ -56,6 +59,33 @@ class FormComponent extends Component {
         }
         this.setState({form: updatedForm, formIsValid: formIsValid});
     };
+
+    defaultForm() {
+        const formElementsArray = [];
+        for (let key in this.state.form) {
+            formElementsArray.push({
+                id: key,
+                config: this.state.form[key]
+            });
+        }
+        let form = (
+            <form onSubmit={this.formSubmitHandler}>
+                {formElementsArray.map(formElement => (
+                    <Input
+                        key={formElement.id}
+                        elementType={formElement.config.elementType}
+                        elementConfig={formElement.config.elementConfig}
+                        value={formElement.config.value}
+                        invalid={!formElement.config.valid}
+                        shouldValidate={formElement.config.validation}
+                        touched={formElement.config.touched}
+                        changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
+                ))}
+                <Button btnType="Success" disabled={!this.state.formIsValid}>{this.state.formButtonText}</Button>
+            </form>
+        );
+        return form;
+    }
 
 }
 

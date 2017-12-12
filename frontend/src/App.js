@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import Layout from './hoc/Layout/Layout'
-import ListBuilder from './containers/UserProfile/UserProfile'
+import UserProfile from './containers/UserProfile/UserProfile'
 import {Redirect, Route} from 'react-router-dom';
 import SingleList from "./containers/SingleList";
 import Signup from "./containers/Signup";
@@ -12,6 +12,7 @@ import Login from "./containers/Login";
 import MyLists from "./containers/MyLists";
 import CreateList from "./containers/CreateList/CreateList";
 import EditList from "./containers/EditList/EditList";
+import Logout from "./containers/Logout/Logout";
 
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
@@ -41,11 +42,13 @@ class App extends Component {
 
             return (
                 <div className="App">
-                    <Layout>
+                    <Layout isAuthenticated={this.props.isAuthenticated}>
                         <Route path="/list/:id" exact component={SingleList}/>
                         <Route path="/signup" exact component={Signup}/>
                         <Route path="/login" exact component={Login}/>
-                        <Route path="/user/:id" exact component={ListBuilder}/>
+                        <Route path="/logout" exact component={Logout}/>
+
+                        <Route path="/user/:id" exact component={UserProfile}/>
                         <PrivateRoute path="/myLists" authed={this.props.isAuthenticated} exact component={MyLists}/>
                         <PrivateRoute path="/createList" authed={this.props.isAuthenticated} exact component={CreateList}/>
                         <PrivateRoute path="/editList/:listId?" authed={this.props.isAuthenticated} component={EditList}/>

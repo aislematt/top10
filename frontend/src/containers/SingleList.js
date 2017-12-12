@@ -3,9 +3,7 @@ import axios from 'axios'
 import Spinner from "../components/UI/Spinner/Spinner";
 import List from "../components/List/List";
 import {connect} from "react-redux";
-import withErrorHandler from "../hoc/withErrorHandler/withErrorHandler";
-import * as actions from "../store/actions";
-import Button from "../UI/Button/Button";
+import Button from "../components/UI/Button/Button";
 
 class SingleList extends Component {
     state = {
@@ -13,7 +11,7 @@ class SingleList extends Component {
     };
 
     editButtonHandler = () => {
-        this.props.history.replace( '/editList/' + this.state.list.id);
+        this.props.history.replace('/editList/' + this.state.list.id);
     };
 
     componentDidMount = () => {

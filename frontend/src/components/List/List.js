@@ -21,7 +21,7 @@ const list = (props) => {
         <div>
 
             <h1>{props.list.name}</h1>
-            <p>By <Link to={"/lists/" + props.list.user_id}>{props.list.user_name}</Link> | <span className={classes.CreatedAt}>{createdAt}</span></p>
+            <p>By <Link to={"/user/" + props.list.user_id}>{props.list.user_name}</Link> | <span className={classes.CreatedAt}>{createdAt}</span></p>
             <p>{props.list.description}</p>
             <div>
                 {listItems}

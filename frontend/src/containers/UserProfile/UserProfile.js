@@ -3,13 +3,14 @@ import axios from 'axios';
 import ListCard from '../../components/ListCard/ListCard'
 import Spinner from '../../components/UI/Spinner/Spinner'
 
-class MyList extends Component {
+class UserProfile extends Component {
 
     state = {
         lists: null
     };
 
     componentDidMount = () => {
+        console.log("YO")
         axios.get('/lists/' + this.props.match.params.id).then(response => {
             console.log(response);
             this.setState({lists: response.data.lists})
@@ -29,4 +30,4 @@ class MyList extends Component {
     }
 }
 
-export default MyList
+export default UserProfile

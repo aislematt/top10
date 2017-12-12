@@ -49,12 +49,13 @@ export const auth = (authData, isSignup) => {
         }
         axios.post(url, authData)
             .then(response => {
-                console.log(response);
                 // const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
                 localStorage.setItem('token', response.data.token);
+                axios.defaults.headers.common["Authorization"] = "TOKEN " + response.data.token;
                 // localStorage.setItem('expirationDate', expirationDate);
                 localStorage.setItem('userId', response.data.user.id);
                 dispatch(authSuccess(response.data.token, response.data.user.id));
+
                 // dispatch(checkAuthTimeout(response.data.expiresIn));
             })
             .catch(err => {
@@ -80,10 +81,10 @@ export const authCheckState = () => {
             // if (expirationDate <= new Date()) {
             //     dispatch(logout());
             // } else {
-                const userId = localStorage.getItem('userId');
-                axios.defaults.headers.common["Authorization"] = "TOKEN " + token;
-                dispatch(authSuccess(token, userId));
-                // dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000 ));
+            const userId = localStorage.getItem('userId');
+            axios.defaults.headers.common["Authorization"] = "TOKEN " + token;
+            dispatch(authSuccess(token, userId));
+            // dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000 ));
             // }
         }
     };

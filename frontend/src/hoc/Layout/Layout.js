@@ -10,7 +10,8 @@ class Layout extends Component {
         return (
 
             <Aux>
-                <Toolbar></Toolbar>
+                <Toolbar
+                    isAuthenticated={this.props.isAuthenticated}/>
                 <main className={classes.Content}>
                     {this.props.children}
                 </main>

@@ -18,10 +18,10 @@ class MyLists extends Component {
     };
 
     render() {
-        let displayLists = <Spinner></Spinner>
+        let displayLists = <Spinner/>;
         if (this.state.lists !== null) {
             displayLists = this.state.lists.map(aList => {
-                return <ListCard key={aList.id} list={aList}></ListCard>
+                return <ListCard key={aList.id} list={aList}/>
             });
         }
         return displayLists;

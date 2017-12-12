@@ -37,6 +37,13 @@ def edit_existing_list_item(list_item):
     list = get_list_by_id(list_item["list_id"])
     return list
 
+def reorderList(list_id, list_item_ids):
+    list = get_list_by_id(list_id)
+    for item in list.listItems:
+        item.rank = list_item_ids.index(item.id) + 1
+    db.get_session().commit()
+    return list
+
 
 def get_list_item_by_id(list_item_id):
     list = db.get_session().query(ListItem).filter(ListItem.id == list_item_id).first()

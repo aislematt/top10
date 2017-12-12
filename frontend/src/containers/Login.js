@@ -4,12 +4,14 @@ import Spinner from "../components/UI/Spinner/Spinner";
 import {connect} from 'react-redux';
 import withErrorHandler from '../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../store/actions/index';
-import Input from "../UI/Input/Input";
-import Button from "../UI/Button/Button";
+import Input from "../components/UI/Input/Input";
+import Button from "../components/UI/Button/Button";
 import FormComponent from "../hoc/Form/Form";
+import {Redirect} from "react-router-dom";
 
 class Login extends FormComponent {
     state = {
+        formButtonText:'LOGIN',
         form: {
             email: {
                 elementType: 'input',
@@ -44,7 +46,7 @@ class Login extends FormComponent {
         loading: false
     };
 
-    loginHandler = (event) => {
+    formSubmitHandler = (event) => {
         event.preventDefault();
         this.setState({loading: true});
         const formData = {};
@@ -55,35 +57,19 @@ class Login extends FormComponent {
     };
 
     render() {
-        const formElementsArray = [];
-        for (let key in this.state.form) {
-            formElementsArray.push({
-                id: key,
-                config: this.state.form[key]
-            });
+        let authRedirect = null;
+        console.log(this.props.isAuthenticated);
+        if (this.props.isAuthenticated) {
+            authRedirect = <Redirect to='/myLists'/>
         }
-        let form = (
-            <form onSubmit={this.loginHandler}>
-                {formElementsArray.map(formElement => (
-                    <Input
-                        key={formElement.id}
-                        elementType={formElement.config.elementType}
-                        elementConfig={formElement.config.elementConfig}
-                        value={formElement.config.value}
-                        invalid={!formElement.config.valid}
-                        shouldValidate={formElement.config.validation}
-                        touched={formElement.config.touched}
-                        changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
-                ))}
-                <Button btnType="Success" disabled={!this.state.formIsValid}>LOGIN</Button>
-            </form>
-        );
+        let form = this.defaultForm();
         if (this.state.loading) {
             form = <Spinner/>;
         }
         return (
             <div>
                 <h4>Login Now</h4>
+                {authRedirect}
                 {form}
             </div>
         );
@@ -91,7 +77,9 @@ class Login extends FormComponent {
 }
 
 const mapStateToProps = state => {
-    return {};
+    return {
+        isAuthenticated: state.auth.token !== null,
+    };
 }
 
 const mapDispatchToProps = dispatch => {

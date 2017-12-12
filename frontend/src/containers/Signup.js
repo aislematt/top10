@@ -4,8 +4,8 @@ import Spinner from "../components/UI/Spinner/Spinner";
 import {connect} from 'react-redux';
 import withErrorHandler from '../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../store/actions/index';
-import Input from "../UI/Input/Input";
-import Button from "../UI/Button/Button";
+import Input from "../components/UI/Input/Input";
+import Button from "../components/UI/Button/Button";
 import FormComponent from "../hoc/Form/Form";
 
 class Signup extends FormComponent {

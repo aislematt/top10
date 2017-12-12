@@ -4,12 +4,13 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import {connect} from 'react-redux';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../store/actions/index';
-import Input from "../../UI/Input/Input";
-import Button from "../../UI/Button/Button";
+import Input from "../../components/UI/Input/Input";
+import Button from "../../components/UI/Button/Button";
 import FormComponent from "../../hoc/Form/Form";
 
 class CreateList extends FormComponent {
     state = {
+        ...this.state,
         form: {
             list_name: {
                 elementType: 'input',
@@ -29,7 +30,7 @@ class CreateList extends FormComponent {
         loading: false
     };
 
-    createListHandler = (event) => {
+    formSubmitHandler = (event) => {
         event.preventDefault();
         this.setState({loading: true});
         const formData = {};
@@ -51,29 +52,7 @@ class CreateList extends FormComponent {
     };
 
     render() {
-        const formElementsArray = [];
-        for (let key in this.state.form) {
-            formElementsArray.push({
-                id: key,
-                config: this.state.form[key]
-            });
-        }
-        let form = (
-            <form onSubmit={this.createListHandler}>
-                {formElementsArray.map(formElement => (
-                    <Input
-                        key={formElement.id}
-                        elementType={formElement.config.elementType}
-                        elementConfig={formElement.config.elementConfig}
-                        value={formElement.config.value}
-                        invalid={!formElement.config.valid}
-                        shouldValidate={formElement.config.validation}
-                        touched={formElement.config.touched}
-                        changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
-                ))}
-                <Button btnType="Success" disabled={!this.state.formIsValid}>CREATE LIST</Button>
-            </form>
-        );
+        let form = this.defaultForm();
         if (this.state.loading) {
             form = <Spinner/>;
         }
@@ -88,13 +67,13 @@ class CreateList extends FormComponent {
 
 const mapStateToProps = state => {
     return {};
-}
+};
 
 const mapDispatchToProps = dispatch => {
     return {
         listAdded: (list) => dispatch(actions.listAdded(list)),
     }
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(CreateList, axios));
 
