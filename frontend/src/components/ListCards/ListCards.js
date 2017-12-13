@@ -9,7 +9,7 @@ const listCards = (props) => {
     });
 
     return (
-        <Columns columns="2">
+        <Columns columns={2}>
             {displayLists}
         </Columns>
 

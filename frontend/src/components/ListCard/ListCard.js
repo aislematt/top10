@@ -9,7 +9,7 @@ const listCard = (props) => {
     return (
         <Link className={classes.ListCard} to={"/list/" + props.list.id}>
             <article>
-                <img className={classes.mainImage} src={props.list.image}/>
+                <img alt="" className={classes.mainImage} src={props.list.image}/>
                 <h3>{props.list.name}</h3>
                 <p>{props.list.user_name} | {createdAt}</p>
             </article>

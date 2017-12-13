@@ -20,19 +20,24 @@ def get_list(list_id):
     return jsonify({"list": list.json})
 
 
+@list_api.route('/featuredLists', methods=["GET"])
+def get_list(list_id):
+    lists = get_featured_lists(list_id)
+    return jsonify({"lists": get_json(lists)})
+
+
 @list_api.route('/list', methods=["POST"])
 @auth.login_required
 def add_list():
     list = add_new_list(request.json, g.current_user)
     return jsonify({"success": True, "list": list.json})
 
+
 @list_api.route('/list', methods=["PATCH"])
 @auth.login_required
 def edit_list():
     list, status = edit_existing_list(request.json, g.current_user)
     return jsonify({"success": True, "list": list.json})
-
-
 
 
 @list_api.route('/listItem', methods=["POST"])

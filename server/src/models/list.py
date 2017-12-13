@@ -68,6 +68,5 @@ class ListItem(Base):
             ts = urlparse.parse_qs(parsed.query).get('t')
             if ts:
                 ts = int(ts[0].split('s')[0])
-            print(ts)
             return ts
         return None

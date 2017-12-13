@@ -8,6 +8,7 @@ import FormComponent from "../hoc/Form/Form";
 
 class Signup extends FormComponent {
     state = {
+        ...this.state,
         form: {
             first_name: {
                 elementType: 'input',

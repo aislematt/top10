@@ -1,13 +1,17 @@
 import React from 'react'
-import classes from './NavigationItem.css'
 
-const navigationItem = (props) => (
-    <li className={classes.NavigationItem}>
-        <a href={props.link}
-           className={props.active ? classes.active : null}>
-            {props.children}
-        </a>
-    </li>
-)
+import {Link, withRouter} from 'react-router-dom'
 
-export default navigationItem
+class NavItem extends React.Component {
+    render () {
+        return (
+            <li className={this.props.link === this.props.location.pathname ? 'active' : ''}>
+                <Link to={this.props.link}
+                       exact={this.props.exact}>{this.props.children}</Link>
+            </li>
+        )
+    }
+}
+
+
+export default withRouter(NavItem);

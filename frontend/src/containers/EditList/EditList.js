@@ -6,7 +6,6 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Button from "../../components/UI/Button/Button";
 import FormComponent from "../../hoc/Form/Form";
 import ListItem from "../../components/ListItem/ListItem";
-import List from "../../components/List/List";
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import classes from './EditList.css'
 import Input from "../../components/UI/Input/Input";

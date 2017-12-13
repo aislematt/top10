@@ -11,7 +11,6 @@ class UserProfile extends Component {
 
     componentDidMount = () => {
         axios.get('/lists/' + this.props.match.params.id).then(response => {
-            console.log(response);
             this.setState({lists: response.data.lists})
         }).catch(error => {
             this.setState({error: true})

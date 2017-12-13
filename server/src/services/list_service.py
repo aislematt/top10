@@ -81,3 +81,8 @@ def get_list_item_by_id(list_item_id):
 def get_list_by_id(list_id):
     list = db.get_session().query(List).filter(List.id == list_id).first()
     return list
+
+def get_featured_lists():
+    #for now just some random ones
+    lists = db.get_session().query(List).limit(6).all()
+    return lists

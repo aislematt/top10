@@ -56,7 +56,6 @@ class Login extends FormComponent {
 
     render() {
         let authRedirect = null;
-        console.log(this.props.isAuthenticated);
         if (this.props.isAuthenticated) {
             authRedirect = <Redirect to='/myLists'/>
         }

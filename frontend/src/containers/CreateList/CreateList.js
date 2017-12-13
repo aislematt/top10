@@ -40,7 +40,6 @@ class CreateList extends FormComponent {
         };
         axios.post('/list', data)
             .then(response => {
-                console.log(response);
                 this.props.listAdded(response.data.list);
                 this.props.history.push('/editList')
             })
