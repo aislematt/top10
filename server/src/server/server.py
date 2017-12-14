@@ -13,7 +13,10 @@ from apis.userapi import user_api
 from services.user_service import verify_user_token
 from utilities.config import Config
 
-app = Flask(__name__)
+application = Flask(__name__)
+app = application
+app.url_map.strict_slashes = False
+
 CORS(app)
 
 Config.load_config()

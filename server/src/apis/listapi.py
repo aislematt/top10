@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request, g
 
 from .baseapi import auth
 from services.list_service import add_new_list_item, get_lists, add_new_list, get_list_by_id, edit_existing_list_item, \
-    reorder_list_items, edit_existing_list
+    reorder_list_items, edit_existing_list, get_featured_lists
 from utilities.utilities import get_json
 
 list_api = Blueprint('list_api', __name__)
@@ -21,8 +21,8 @@ def get_list(list_id):
 
 
 @list_api.route('/featuredLists', methods=["GET"])
-def get_list(list_id):
-    lists = get_featured_lists(list_id)
+def featured_lists():
+    lists = get_featured_lists()
     return jsonify({"lists": get_json(lists)})
 
 
