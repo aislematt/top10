@@ -12,10 +12,11 @@ import listReducer from "./store/reducers/lists";
 
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk'
+let Config = require('Config');
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = Config.serverURL;
 
 const rootReducer = combineReducers({
     auth: authReducer,

@@ -69,7 +69,7 @@ class Signup extends FormComponent {
         loading: false
     };
 
-    signupHandler = (event) => {
+    formSubmitHandler = (event) => {
         event.preventDefault();
         this.setState({loading: true});
         const formData = {};

@@ -13,7 +13,7 @@ import MyLists from "./containers/MyLists";
 import CreateList from "./containers/CreateList/CreateList";
 import EditList from "./containers/EditList/EditList";
 import Logout from "./containers/Logout/Logout";
-
+import FeaturedLists from "./containers/FeaturedLists/FeaturedLists";
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
     return (
@@ -49,6 +49,8 @@ class App extends Component {
                         <Route path="/logout" exact component={Logout}/>
 
                         <Route path="/user/:id" exact component={UserProfile}/>
+                        <Route path="/" exact component={FeaturedLists}/>
+
                         <PrivateRoute path="/myLists" authed={this.props.isAuthenticated} exact component={MyLists}/>
                         <PrivateRoute path="/createList" authed={this.props.isAuthenticated} exact component={CreateList}/>
                         <PrivateRoute path="/editList/:listId?" authed={this.props.isAuthenticated} component={EditList}/>
