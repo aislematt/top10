@@ -23,7 +23,6 @@ CORS(app)
 
 Config.load_config()
 
-app = Flask(__name__)
 app.register_blueprint(user_api)
 app.register_blueprint(list_api)
 
