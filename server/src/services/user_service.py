@@ -40,6 +40,9 @@ def generate_auth_token(user):
 
 
 def verify_user_token(token):
+    import logging
+    logging.info(token)
+    print(token)
     success, user_id = User.decode_auth_token(token)
     if not success:
         return False, None

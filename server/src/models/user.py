@@ -7,6 +7,7 @@ from sqlalchemy import Column, String, DateTime
 from models.basemodel import Base
 from passlib.hash import bcrypt_sha256
 
+import logging
 from utilities.config import Config
 
 
@@ -66,6 +67,8 @@ class User(Base):
             payload = jwt.decode(auth_token, Config.get_config()["SECRET_KEY"])
             return True, payload['sub']
         except jwt.ExpiredSignatureError:
+            logging.info("SIGNATURE EXPIRED")
             return False, 'Signature expired. Please log in again.'
         except jwt.InvalidTokenError:
+            logging.info("INVALID TOKEN")
             return False, 'Invalid token. Please log in again.'

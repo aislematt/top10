@@ -4,6 +4,8 @@ from flask_cors import CORS
 from apis.baseapi import auth, InvalidUsage
 from apis.listapi import list_api
 from apis.userapi import user_api
+import logging
+from logging.handlers import RotatingFileHandler
 
 # tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../frontend/templates')
 # static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../static')
@@ -21,12 +23,14 @@ CORS(app)
 
 Config.load_config()
 
-
+app = Flask(__name__)
 app.register_blueprint(user_api)
 app.register_blueprint(list_api)
 
+
 @auth.verify_token
 def verify_token(token):
+    app.logger.info(token)
     success, user = verify_user_token(token)
     if success:
         g.current_user = user
@@ -40,6 +44,8 @@ def handle_invalid_usage(error):
     return response
 
 
-
 if __name__ == '__main__':
+    handler = RotatingFileHandler('foo.log', maxBytes=10000, backupCount=1)
+    handler.setLevel(logging.INFO)
+    app.logger.addHandler(handler)
     app.run(debug=True)
