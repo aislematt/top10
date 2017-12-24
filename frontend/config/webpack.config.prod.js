@@ -52,7 +52,7 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
 module.exports = {
     externals: {
         'Config': JSON.stringify({
-            serverURL: "https://topten-dev2.us-east-2.elasticbeanstalk.com"
+            serverURL: "https://backend.yourtoplists.com"
         })
     },
     // Don't attempt to continue if there are any errors.
