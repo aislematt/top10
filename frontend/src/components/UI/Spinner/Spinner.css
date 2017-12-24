@@ -40,8 +40,8 @@
     border-radius: 0 10.2em 10.2em 0;
     top: -0.1em;
     left: 5.1em;
-    -webkit-transform-origin: 0px 5.1em;
-    transform-origin: 0px 5.1em;
+    -webkit-transform-origin: 0 5.1em;
+    transform-origin: 0 5.1em;
     -webkit-animation: load2 2s infinite ease;
     animation: load2 2s infinite ease;
 }

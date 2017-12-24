@@ -16,7 +16,7 @@ const listItem = (props) => {
             playerVars: {
                 start: props.item.yt_ts
             }
-        }
+        };
         video = <YouTube
             videoId={props.item.yt_id}
             opts={opts}

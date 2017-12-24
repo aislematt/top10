@@ -9,7 +9,7 @@ class FormComponent extends Component {
         formButtonText:"SUBMIT"
     };
 
-    checkValidity(value, rules) {
+    static checkValidity(value, rules) {
         let isValid = true;
         if (!rules) {
             return true;
@@ -68,7 +68,7 @@ class FormComponent extends Component {
                 config: this.state.form[key]
             });
         }
-        let form = (
+        let defaultForm = (
             <form onSubmit={this.formSubmitHandler}>
                 {formElementsArray.map(formElement => (
                     <Input
@@ -84,7 +84,7 @@ class FormComponent extends Component {
                 <Button btnType="Success" disabled={!this.state.formIsValid}>{this.state.formButtonText}</Button>
             </form>
         );
-        return form;
+        return defaultForm;
     }
 
 }

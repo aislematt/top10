@@ -83,7 +83,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onAuth: (authData, isSignup) => dispatch(actions.auth(authData, isSignup)),
     }
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Login, axios));
 
